@@ -21,12 +21,18 @@ class WeatherAPIClient:
             return coords
 
         except requests.exceptions.RequestException:
-            print("[ERREUR] Aucune réponse du serveur de l'API Geocode.")
+            print("[ERREUR] Aucune réponse du serveur de l'API de géocode.")
 
 
     def get_meteo(self, latitude: float, longitude: float) -> dict:
         url_meteo = f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&daily=temperature_2m_max,temperature_2m_min&current_weather=true"
-        response = requests.get(url_meteo, timeout=5)
-        meteo_dict = response.json()
 
-        return meteo_dict
+        try:
+
+            response = requests.get(url_meteo, timeout=5)
+            meteo_dict = response.json()
+
+            return meteo_dict
+
+        except requests.exceptions.RequestException:
+            print("[ERREUR] Aucune réponse du serveur de l'API météo.")

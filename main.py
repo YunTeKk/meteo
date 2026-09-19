@@ -113,7 +113,7 @@ if __name__ == "__main__":
                 break
 
             elif user_export_choice == "non":
-                print("Femeture de l'application, A bientôt !\n")
+                print("Femeture de l'application, A bientôt !")
                 break
 
         except requests.exceptions.RequestException:
