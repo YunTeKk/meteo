@@ -1,4 +1,5 @@
 from weatherapiclient import WeatherAPIClient
+from dataexporter import DataExporter
 
 weather_code_dict_conversion = {
     "0": "Ciel clair",
@@ -75,3 +76,29 @@ if __name__ == "__main__":
     print(f"Températures minimales de la journée : {temperature_min} {temperature_min_unit}")
     print(f"Températures maximales de la journée : {temperature_max} {temperature_max_unit}")
     print("")
+
+    print(f"Voulez vous exporter les données météo de {city} ? (json / csv / non) :")
+    user_export_choice: str = input()
+
+    if user_export_choice == "json" or user_export_choice == "csv":
+
+        data_exporter = DataExporter()
+
+        weather_results_dict = {
+            "Ville": city,
+            "Température": f"{temperature} {temperature_unit}",
+            "Vitesse du vent": f"{wind} {wind_unit}",
+            "Temps actuel": current_weather,
+            "Températures minimales de la journée": f"{temperature_min} {temperature_min_unit}",
+            "Températures maximales de la journée": f"{temperature_max} {temperature_max_unit}" 
+        }
+        if user_export_choice == "json":
+            save_file = "meteo_historique.json"
+            data_exporter.export_json(weather_results_dict, save_file)
+
+        elif user_export_choice == "csv":
+            save_file = "meteo_historique.csv"
+            data_exporter.export_csv(weather_results_dict, save_file)
+
+    elif user_export_choice == "non":
+        print("Femeture de l'application, A bientôt !")

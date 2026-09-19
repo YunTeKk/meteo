@@ -1,10 +1,6 @@
 import requests
 
 class WeatherAPIClient:
-    
-
-    def __init__(self):
-        pass
 
     def get_coords(self, city: str) -> tuple[float, float]:
         url_geocode = f"https://geocoding-api.open-meteo.com/v1/search?name={city}&count=1&language=fr"
