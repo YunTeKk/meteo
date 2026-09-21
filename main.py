@@ -106,8 +106,12 @@ if __name__ == "__main__":
 
             elif new_research == "n":
                 
-                print("Voulez vous exporter les données des vos recherches météo ? (json / csv / non) :")
+                print("Voulez vous exporter les données des vos recherches météo ? (json / csv / non) : ")
                 user_export_choice: str = input()
+
+                while user_export_choice != "json" and user_export_choice != "csv" and user_export_choice != "non":
+
+                    user_export_choice = input("Veuillez répondre par un des choix possibles (json / csv/ non) : ")
 
                 if user_export_choice == "json" or user_export_choice == "csv":
 

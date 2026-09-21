@@ -2,3 +2,4 @@ __pycache__/
 meteo_historique.json
 meteo_historique.csv
 .~lock.meteo_historique.csv#
+.pytest_cache
