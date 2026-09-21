@@ -37,7 +37,7 @@ weather_code_dict_conversion = {
 if __name__ == "__main__":
 
     weather_api = WeatherAPIClient()
-
+    weather_results = []
     
     print("=== BIENVENUE SUR L'APPLICATION METEO ===")
 
@@ -75,9 +75,18 @@ if __name__ == "__main__":
 
             temperature_min_unit = meteo["daily_units"]["temperature_2m_min"]
             temperature_max_unit = meteo["daily_units"]["temperature_2m_max"]
+
+            current_weather_results_dict = {
+                "Ville": city,
+                "Température": f"{temperature} {temperature_unit}",
+                "Vitesse du vent": f"{wind} {wind_unit}",
+                "Temps actuel": current_weather,
+                "Températures minimales de la journée": f"{temperature_min} {temperature_min_unit}",
+                "Températures maximales de la journée": f"{temperature_max} {temperature_max_unit}" 
+            }
+
+            weather_results.append(current_weather_results_dict)
             
-
-
             print("--- METEO ACTUELLE ---")
             print(f"Température : {temperature} {temperature_unit}")
             print(f"Vitesse du vent : {wind} {wind_unit}")
@@ -86,36 +95,39 @@ if __name__ == "__main__":
             print(f"Températures maximales de la journée : {temperature_max} {temperature_max_unit}")
             print("")
 
-            print(f"Voulez vous exporter les données météo de {city} ? (json / csv / non) :")
-            user_export_choice: str = input()
+            new_research = input("Souhaitez vous refaire une recherche ? (O/N) : ").lower()
 
-            if user_export_choice == "json" or user_export_choice == "csv":
+            while new_research != "o" and new_research != "n":
 
-                data_exporter = DataExporter()
+                new_research = input("Veuillez indiquer votre choix (O/N) :")
 
-                weather_results_dict = {
-                    "Ville": city,
-                    "Température": f"{temperature} {temperature_unit}",
-                    "Vitesse du vent": f"{wind} {wind_unit}",
-                    "Temps actuel": current_weather,
-                    "Températures minimales de la journée": f"{temperature_min} {temperature_min_unit}",
-                    "Températures maximales de la journée": f"{temperature_max} {temperature_max_unit}" 
-                }
-                if user_export_choice == "json":
-                    save_file = "meteo_historique.json"
-                    data_exporter.export_json(weather_results_dict, save_file)
-                    
-                elif user_export_choice == "csv":
-                    save_file = "meteo_historique.csv"
-                    data_exporter.export_csv(weather_results_dict, save_file)
+            if new_research == "o":
+                continue
 
-                print(f"Données exportées dans {save_file}. A bientôt !")
-                break
+            elif new_research == "n":
+                
+                print("Voulez vous exporter les données des vos recherches météo ? (json / csv / non) :")
+                user_export_choice: str = input()
 
-            elif user_export_choice == "non":
-                print("Femeture de l'application, A bientôt !")
-                break
+                if user_export_choice == "json" or user_export_choice == "csv":
 
+                    data_exporter = DataExporter()
+
+                    if user_export_choice == "json":
+                        save_file = "meteo_historique.json"
+                        data_exporter.export_json(weather_results, save_file)
+                        
+                    elif user_export_choice == "csv":
+                        save_file = "meteo_historique.csv"
+                        data_exporter.export_csv(weather_results, save_file)
+
+                    print(f"Données exportées dans {save_file}. A bientôt !")
+                    break
+
+                elif user_export_choice == "non":
+                    print("Femeture de l'application, A bientôt !")
+                    break
+            
         except requests.exceptions.RequestException:
             print(f"Impossible de récupérer les données météo de {city}.")
 
